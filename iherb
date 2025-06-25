@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>iHerb — с заботой о здоровье вашей семьи</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7fef7;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(to right, #2e7d32, #66bb6a);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      font-size: 30px;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    header span {
+      color: #c8facc;
+    }
+    nav {
+      background: white;
+      padding: 15px 0;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    nav a {
+      display: inline-block;
+      margin: 5px 15px;
+      background-color: #a5d6a7;
+      color: #1b5e20;
+      padding: 10px 16px;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 20px;
+      transition: background-color 0.3s;
+      cursor: pointer;
+      user-select: none;
+    }
+    nav a:hover {
+      background-color: #81c784;
+    }
+    section {
+      display: none;
+      padding: 60px 40px;
+      animation: fade 0.4s ease-in-out;
+    }
+    section.active {
+      display: block;
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      font-size: 34px;
+      margin-bottom: 20px;
+      color: #2e7d32;
+      text-align: center;
+    }
+    .subtitle {
+      color: #555;
+      font-size: 16px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .info-box {
+      background: #e8f5e9;
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 12px;
+      max-width: 900px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .info-box h2 {
+      color: #2e7d32;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .info-box p {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .info-box img {
+      max-width: 100%;
+      margin-top: 15px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    footer {
+      font-size: 13px;
+      text-align: center;
+      padding: 25px;
+      color: gray;
+      background: #f0f0f0;
+      border-top: 1px solid #ccc;
+      margin-top: 40px;
+    }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+    }
+    .product {
+      background: #c8facc;
+      border-radius: 12px;
+      padding: 15px;
+      max-width: 220px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .product img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      object-fit: contain;
+      height: 150px;
+    }
+    .product h3 {
+      color: #2e7d32;
+      font-size: 18px;
+      margin: 0 0 8px;
+    }
+    .product p {
+      font-size: 14px;
+      margin: 0 0 10px;
+      min-height: 40px;
+    }
+    .price {
+      font-weight: bold;
+      color: #1b5e20;
+      margin-bottom: 10px;
+    }
+    .buy-btn {
+      padding: 8px 15px;
+      border: none;
+      background: #2e7d32;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .buy-btn:hover {
+      background: #1b5e20;
+    }
+    #cart {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #e8f5e9;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    #cart h2 {
+      color: #2e7d32;
+      margin-top: 0;
+    }
+    #cart-list {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 15px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    #cart-list li {
+      padding: 8px 10px;
+      border-bottom: 1px solid #b2dfdb;
+      display: flex;
+      justify-content: space-between;
+      font-size: 15px;
+      color: #1b5e20;
+    }
+    #cart-total {
+      font-weight: bold;
+      font-size: 17px;
+      margin-bottom: 15px;
+      color: #2e7d32;
+    }
+    #clear-cart-btn {
+      padding: 8px 15px;
+      border: none;
+      background: #b71c1c;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #clear-cart-btn:hover {
+      background: #7f0000;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    iHerb — <span>с заботой о здоровье вашей семьи.</span>
+  </header>
+  <nav>
+    <a onclick="showSection('home')">Главная</a>
+    <a onclick="showSection('about')">О нас</a>
+    <a onclick="showSection('catalog')">Каталог</a>
+    <a onclick="showSection('contacts')">Контакты</a>
+    <a onclick="showSection('assortment')">Ассортименты</a>
+  </nav>
+
+  <section id="home" class="active">
+    <div class="info-box">
+      <h2>Добро пожаловать в iHerb Ош</h2>
+      <p>Мы предлагаем широкий выбор качественных витаминов и биологических добавок из США.</p>
+      <img src="https://i.postimg.cc/pT0YxtT6/Whats-App-2025-06-22-18-00-11-286fd900.jpg" alt="Главная фото 1" />
+      <img src="https://i.postimg.cc/L5nk80g6/Whats-App-2025-06-22-18-00-11-65da36cb.jpg" alt="Главная фото 2" />
+    </div>
+    <footer><br />Магазин iHerb в г. Ош.<br />Все права защищены © 2025</footer>
+  </section>
+
+  <section id="about">
+    <div class="info-box">
+      <h2>Кто мы?</h2>
+      <p>iHerb Ош — это локальный проект, основанный на страсти к здоровому образу жизни. Мы сотрудничаем с проверенными брендами и предлагаем доступные решения для улучшения самочувствия и иммунитета.</p>
+      <p>Наши консультанты помогут подобрать нужный товар, а доставка по городу сделает покупку максимально удобной.</p>
+    </div>
+    <footer><br />Магазин iHerb в г. Ош.<br />Все права защищены © 2025</footer>
+  </section>
+
+  <section id="catalog">
+    <h1>Каталог</h1>
+    <div class="products">
+      <div class="product">
+        <img src="https://avatars.mds.yandex.net/i?id=0504c24ff530635473e7b7b0e126a13f_l-5506301-images-thumbs&n=13" alt="Fish Oil" />
+        <h3>Omega-3 Fish Oil</h3>
+        <p>Поддержка сердца и мозга</p>
+        <div class="price">1200 сом</div>
+        <button class="buy-btn" onclick="addToCart('Omega-3 Fish Oil', 1200)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://static.ticimax.cloud/cdn-cgi/image/width=1249,quality=85/10962/uploads/urunresimleri/buyuk/vitagil-vitamin-c-1000-mg-30-tablet-a2-449.png" alt="Vitamin C" />
+        <h3>Vitamin C 1000mg</h3>
+        <p>Иммунная поддержка</p>
+        <div class="price">750 сом</div>
+        <button class="buy-btn" onclick="addToCart('Vitamin C 1000mg', 750)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://nutrition.ae/files/images/ecommerce/products/basix-collagen-peptides-300-gm.jpg" alt="Collagen" />
+        <h3>Коллагеновые пептиды</h3>
+        <p>Красивая кожа, волосы и ногти</p>
+        <div class="price">1500 сом</div>
+        <button class="buy-btn" onclick="addToCart('Коллагеновые пептиды', 1500)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://i.pinimg.com/736x/ab/56/54/ab56549062bd978439609586e6bf03b8--iron-vitamin-multi-vitamin.jpg" alt="Multivitamins" />
+        <h3>Суправит: Кальций, Магний, Цинк</h3>
+        <p>Ежедневная поддержка организма</p>
+        <div class="price">990 сом</div>
+        <button class="buy-btn" onclick="addToCart('Суправит: Кальций, Магний, Цинк', 990)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_685814d52856d37c40f0069d_6858160433bb02674c0128dd/scale_1200" alt="Рыбий жир суперформула" />
+        <h3>Рыбий жир суперформула</h3>
+        <p>Высокая концентрация омега-3</p>
+        <div class="price">1100 сом</div>
+        <button class="buy-btn" onclick="addToCart('Рыбий жир суперформула', 1100)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://avatars.mds.yandex.net/get-mpic/12352681/2a00000193bb62d9cb2199da9971e9545b25/orig" alt="Тройной омега-3" />
+        <h3>Тройной омега-3</h3>
+        <p>Для сердца и суставов</p>
+        <div class="price">1300 сом</div>
+        <button class="buy-btn" onclick="addToCart('Тройной омега-3', 1300)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://avatars.mds.yandex.net/i?id=6fc9c5a9cf8dc93ca6ed1abe88a33764_l-4937208-images-thumbs&n=13" alt="Омега-3 для детей" />
+        <h3>Омега-3 для детей</h3>
+        <p>С натуральным вкусом</p>
+        <div class="price">950 сом</div>
+        <button class="buy-btn" onclick="addToCart('Омега-3 для детей', 950)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://cdn1.ozone.ru/s3/multimedia-l/c600/6007665465.jpg" alt="Концентрированный рыбий жир" />
+        <h3>Концентрированный рыбий жир</h3>
+        <p>Улучшенная формула</p>
+        <div class="price">1400 сом</div>
+        <button class="buy-btn" onclick="addToCart('Концентрированный рыбий жир', 1400)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://static.aptekiplus.ru/master-data/products/images/img_233392_233392.jpg?t=1744605844" alt="Омега-3 с витамином D" />
+        <h3>Омега-3 с витамином D</h3>
+        <p>Иммунная поддержка</p>
+        <div class="price">1200 сом</div>
+        <button class="buy-btn" onclick="addToCart('Омега-3 с витамином D', 1200)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://i.pinimg.com/736x/08/c9/b3/08c9b346d9f66c344672a772a1ee534c.jpg" alt="Капсулы омега-3" />
+        <h3>Капсулы омега-3</h3>
+        <p>Удобная упаковка</p>
+        <div class="price">1150 сом</div>
+        <button class="buy-btn" onclick="addToCart('Капсулы омега-3', 1150)">Купить</button>
+      </div>
+      <div class="product">
+        <img src="https://sportbar-obk.ru/wp-content/uploads/d/2/a/d2a945de165b36455826cbd8afd4808e.png" alt="Жир печени трески" />
+        <h3>Жир печени трески</h3>
+        <p>Классическая формула</p>
+        <div class="price">1000 сом</div>
+        <button class="buy-btn" onclick="addToCart('Жир печени трески', 1000)">Купить</button>
+      </div>
+    </div>
+    <div id="cart">
+      <h2>Корзина</h2>
+      <ul id="cart-list"></ul>
+      <div id="cart-total">Итого: 0 сом</div>
+      <button id="clear-cart-btn" onclick="clearCart()">Очистить корзину</button>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <div class="info-box">
+      <h2>Связаться с нами</h2>
+      <p>📍 Адрес: г. Ош, ул. Курмажан датка 256.<br>
+      📧 Email: <a href="mailto:info@iherbosh.kg">info@iherbosh.kg</a><br>
+      📞 Телефон: <a href="tel:+996555123456">+996 555 123 456</a><br>
+      🕒 График работы: Пн–Сб с 9:00 до 18:00</p>
+      <img src="https://i.postimg.cc/tTRtLgX6/Whats-App-2025-06-22-18-00-11-28bafe64.jpg" alt="Фасад магазина" />
+    </div>
+    <footer><br />Магазин iHerb в г. Ош.<br />Все права защищены © 2025</footer>
+  </section>
+
+  <section id="assortment">
+    <div class="info-box">
+      <h2>Наш ассортимент</h2>
+      <p>Вот как выглядят полки нашего магазина:</p>
+      <img src="https://i.postimg.cc/HnRwc4b0/Whats-App-2025-06-22-18-00-36-9c54661e.jpg" alt="Ассортимент 1" />
+      <img src="https://i.postimg.cc/4NHbCqTW/Whats-App-2025-06-22-18-00-36-36b473a8.jpg" alt="Ассортимент 2" />
+      <img src="https://i.postimg.cc/y6bXbB2J/Whats-App-2025-06-22-18-00-36-e92f8576.jpg" alt="Ассортимент 3" />
+      <img src="https://i.postimg.cc/htF8KsDc/Whats-App-2025-06-22-18-00-36-f474d940.jpg" alt="Ассортимент 4" />
+    </div>
+    <footer><br />Магазин iHerb в г. Ош.<br />Все права защищены © 2025</footer>
+  </section>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+    const cart = [];
+
+    function addToCart(name, price) {
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ name, price, quantity: 1 });
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      const list = document.getElementById('cart-list');
+      const totalEl = document.getElementById('cart-total');
+      list.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} × ${item.quantity} — ${item.price * item.quantity} сом`;
+        list.appendChild(li);
+        total += item.price * item.quantity;
+      });
+      totalEl.textContent = `Итого: ${total} сом`;
+    }
+
+    function clearCart() {
+      cart.length = 0;
+      renderCart();
+    }
+  </script>
+</body>
+</html>
